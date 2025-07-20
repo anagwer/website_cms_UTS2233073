@@ -17,11 +17,13 @@
                 <h3 class="card-title">
                     <i class="fas fa-comment"></i> Data Testimonial
                 </h3>
-                <a href="<?= base_url('dashboard/testimonial_tambah') ?>" class="btn btn-light btn-sm">
+                
+            </div>
+			
+            <div class="card-body">
+				<a href="<?= base_url('dashboard/testimonial_tambah') ?>" class="btn btn-success btn-sm mb-3">
                     <i class="fas fa-plus-circle"></i> Tambah Testimonial
                 </a>
-            </div>
-            <div class="card-body">
                 <?php if ($this->session->flashdata('success')): ?>
                     <div class="alert alert-success"><?= $this->session->flashdata('success'); ?></div>
                 <?php elseif ($this->session->flashdata('error')): ?>

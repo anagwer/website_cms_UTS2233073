@@ -1186,20 +1186,9 @@ class Dashboard extends CI_Controller
 	// Menghapus testimonial
 	public function testimonial_hapus($id)
 	{
-		$where = array('testimonial_id' => $id);
-		$testimonial = $this->m_data->edit_data('testimonial', $where)->row();
-
-		// Hapus file gambar
-		if ($testimonial && $testimonial->testimonial_foto) {
-			$file = './gambar/testimonial/' . $testimonial->testimonial_foto;
-			if (file_exists($file)) {
-				unlink($file);
-			}
-		}
-
-		$this->m_data->delete_data($where, 'testimonial');
-		$this->session->set_flashdata('success', 'Testimonial berhasil dihapus.');
-		redirect(base_url('dashboard/testimonial'));
+        $where = array('testimonial_id' => $id);
+        $this->m_data->delete_data('testimonial', $where);
+        redirect(base_url('dashboard/testimonial'));
 	}
 
 
@@ -1229,7 +1218,7 @@ class Dashboard extends CI_Controller
         $config['max_size']      = 2048;
         $config['file_name']     = 'produk_' . time();
 
-        $this->upload->initialize($config);
+        $this->load->library('upload', $config);
 
         if (!$this->upload->do_upload('foto')) {
             $error = array('error' => $this->upload->display_errors());
@@ -1245,7 +1234,6 @@ class Dashboard extends CI_Controller
             'produk_nama'       => $this->input->post('nama'),
             'produk_kategori'   => $this->input->post('kategori'),
             'produk_harga'      => $this->input->post('harga'),
-            'produk_stok'       => $this->input->post('stok'),
             'produk_keterangan' => $this->input->post('keterangan'),
             'produk_foto'       => $foto,
             'produk_status'     => $this->input->post('status')
@@ -1326,12 +1314,12 @@ class Dashboard extends CI_Controller
     public function produk_hapus($id)
     {
         // Soft delete
-        $this->db->where('produk_id', $id);
-        $this->db->update('produk', ['produk_status' => 'hapus']);
+        // $this->db->where('produk_id', $id);
+        // $this->db->update('produk', ['produk_status' => 'hapus']);
 
         // Atau hard delete:
-        // $this->db->where('produk_id', $id);
-        // $this->db->delete('produk');
+        $this->db->where('produk_id', $id);
+        $this->db->delete('produk');
 
         $this->session->set_flashdata('success', 'Produk berhasil dihapus.');
         redirect('dashboard/produk');
